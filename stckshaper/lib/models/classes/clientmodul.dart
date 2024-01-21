@@ -18,6 +18,18 @@ class Client {
     required this.paidAmount,
     required this.creditAmount,
   });
+  static Client empty() {
+    return Client(
+      id: 0,
+      name: '',
+      address: '',
+      phoneNumber: '',
+      soldTotal: 0,
+      remainingAmount: 0,
+      paidAmount: 0,
+      creditAmount: 0,
+    );
+  }
 
   // Convert a Client object into a Map
   Map<String, dynamic> toMap() {

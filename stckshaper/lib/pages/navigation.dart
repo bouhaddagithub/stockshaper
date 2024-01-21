@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:stckshaper/models/classes/clientmodul.dart';
 import 'package:stckshaper/pages/default_tabs.dart';
+import 'package:stckshaper/sqlite/database_connection.dart';
 
 import '../style.dart';
 import '../widgets/client_row.dart';
@@ -15,6 +17,21 @@ class Navigation extends StatefulWidget {
 class _NavigationState extends State<Navigation> {
   int selected = 0;
 
+  late List<Client> clients = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchClients();
+  }
+
+  void _fetchClients() async {
+    List<Client> fetchedClients = await DatabaseHelper().getClients();
+    setState(() {
+      clients = fetchedClients;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,8 +43,10 @@ class _NavigationState extends State<Navigation> {
             tabs: [
               Column(
                 children: [
-                  ClientRow(),
-                  ProductRow(),
+                  if (clients.isNotEmpty)
+                    for (Client client in clients) ClientRow(client: client),
+                  if (clients.isEmpty) ClientRow(client: Client.empty()),
+                  const ProductRow(),
                 ],
               ),
               Container(
@@ -48,7 +67,9 @@ class _NavigationState extends State<Navigation> {
               decoration: BoxDecoration(
                 color: kSecondaryColor,
                 borderRadius: BorderRadius.circular(10),
-                boxShadow: [BoxShadow(blurRadius: 10, color: kBlackColor.withOpacity(0.4))],
+                boxShadow: [
+                  BoxShadow(blurRadius: 10, color: kBlackColor.withOpacity(0.4))
+                ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,

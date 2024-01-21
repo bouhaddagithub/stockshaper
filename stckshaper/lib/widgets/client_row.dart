@@ -1,8 +1,11 @@
 import "package:flutter/material.dart";
+import "package:stckshaper/models/classes/clientmodul.dart";
 import "package:stckshaper/style.dart";
+import "package:stckshaper/widgets/info_dialog.dart";
 
 class ClientRow extends StatelessWidget {
-  const ClientRow({super.key});
+  final Client client;
+  const ClientRow({super.key, required this.client});
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +122,9 @@ class ClientRow extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  _onMoreTap(context);
+                },
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10,
@@ -147,5 +152,34 @@ class ClientRow extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _onMoreTap(BuildContext context) async {
+    if (client != null) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return InfoDialog(client: client);
+        },
+      );
+    } else {
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('No Client Information'),
+            content: const Text('No client information available.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the alert
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 }
