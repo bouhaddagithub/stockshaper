@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:stckshaper/widgets/forms_dialog.dart";
 
 import "../style.dart";
 
@@ -18,6 +19,8 @@ class DefaultController extends StatefulWidget {
 }
 
 class _DefaultControllerState extends State<DefaultController> {
+  int selectedTab = 0;
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -38,16 +41,39 @@ class _DefaultControllerState extends State<DefaultController> {
                 ),
                 actions: [
                   IconButton(
-                    onPressed: () {},
-                    padding: const EdgeInsets.all(12),
-                    icon: Icon(
-                      Icons.settings_rounded,
-                      color: kSecondaryColor.withOpacity(0.8),
-                    ),
+                    onPressed: () {
+                      if (selectedTab == 0) {
+                        showDialog(
+                          context: context,
+                          builder: (context) => const ProductFormDialog(),
+                        );
+                      } else if (selectedTab == 1) {
+                        showDialog(
+                          context: context,
+                          builder: (context) => const ClientFormDialog(),
+                        );
+                      } else if (selectedTab == 2) {
+                        showDialog(
+                          context: context,
+                          builder: (context) => const CategoryFormDialog(),
+                        );
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (context) => const DepositFormDialog(),
+                        );
+                      }
+                    },
+                    iconSize: 32,
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
+                        borderRadius: BorderRadius.circular(8),
                       ),
+                      fixedSize: const Size(50, 50),
+                    ),
+                    icon: Icon(
+                      Icons.add_rounded,
+                      color: kMainColor,
                     ),
                   ),
                   IconButton(
@@ -87,12 +113,19 @@ class _DefaultControllerState extends State<DefaultController> {
                 pinned: true,
                 bottom: TabBar(
                   isScrollable: true,
-                  labelPadding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                  labelPadding: const EdgeInsets.symmetric(
+                    horizontal: 15,
+                    vertical: 8,
+                  ),
                   tabAlignment: TabAlignment.start,
                   padding: const EdgeInsets.all(0),
-                  tabs: List.generate(widget.tabsLabels.length,
-                      (index) => Text(widget.tabsLabels[index])),
+                  onTap: (value) {
+                    selectedTab = value;
+                  },
+                  tabs: List.generate(
+                    widget.tabsLabels.length,
+                    (index) => Text(widget.tabsLabels[index]),
+                  ),
                 ),
               ),
             ];

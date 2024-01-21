@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stckshaper/models/classes/clientmodul.dart';
+import 'package:stckshaper/models/classes/productmodul.dart';
 import 'package:stckshaper/pages/default_tabs.dart';
 import 'package:stckshaper/sqlite/database_connection.dart';
 
@@ -46,7 +47,9 @@ class _NavigationState extends State<Navigation> {
                   if (clients.isNotEmpty)
                     for (Client client in clients) ClientRow(client: client),
                   if (clients.isEmpty) ClientRow(client: Client.empty()),
-                  const ProductRow(),
+                  ProductRow(
+                    product: Product(id: 0, barCode: "barCode", reference: "reference", name: "name", buyingPrice: 5, sellingPrice: 10, stock: 2, photo: "photo", groupId: 0, depositeId: 0),
+                  ),
                 ],
               ),
               Container(

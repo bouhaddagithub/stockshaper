@@ -1,8 +1,13 @@
 import "package:flutter/material.dart";
 import "package:stckshaper/style.dart";
 
+import "../models/classes/productmodul.dart";
+import "info_dialog.dart";
+
 class ProductRow extends StatelessWidget {
-  const ProductRow({super.key});
+  const ProductRow({super.key, required this.product});
+  
+  final Product product;
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +124,9 @@ class ProductRow extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  _showFullInfo(context);
+                },
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10,
@@ -146,6 +153,15 @@ class ProductRow extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+  
+  void _showFullInfo(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ProductInfoDialog(product: product);
+      },
     );
   }
 }

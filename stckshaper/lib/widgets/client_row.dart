@@ -155,31 +155,31 @@ class ClientRow extends StatelessWidget {
   }
 
   void _onMoreTap(BuildContext context) async {
-    if (client != null) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return InfoDialog(client: client);
-        },
-      );
-    } else {
-      await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('No Client Information'),
-            content: const Text('No client information available.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the alert
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    }
+    // if (client != null) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ClientInfoDialog(client: client);
+      },
+    );
+    // } else {
+    //   await showDialog(
+    //     context: context,
+    //     builder: (BuildContext context) {
+    //       return AlertDialog(
+    //         title: const Text('No Client Information'),
+    //         content: const Text('No client information available.'),
+    //         actions: [
+    //           TextButton(
+    //             onPressed: () {
+    //               Navigator.of(context).pop(); // Close the alert
+    //             },
+    //             child: const Text('OK'),
+    //           ),
+    //         ],
+    //       );
+    //     },
+    //   );
+    // }
   }
 }
