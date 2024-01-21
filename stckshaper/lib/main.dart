@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:stckshaper/pages/default_tabs.dart';
+import 'package:stckshaper/pages/navigation.dart';
+import 'package:stckshaper/style.dart';
 import 'package:stckshaper/temporary_homepage.dart';
 
 void main() {
@@ -12,12 +15,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'GL Project',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: kMainColor),
+        // fontFamily: "Roboto",
         useMaterial3: true,
       ),
-      home: TempHomePage(),
+      home: const Navigation(),
     );
   }
 }

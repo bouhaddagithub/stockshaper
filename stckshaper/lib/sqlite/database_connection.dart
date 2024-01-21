@@ -3,14 +3,15 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:stckshaper/models/bonlivraisonmodul.dart';
-import 'package:stckshaper/models/clientmodul.dart';
-import 'package:stckshaper/models/depositmodul.dart';
-import 'package:stckshaper/models/facturesmodul.dart';
-import 'package:stckshaper/models/groupsmodul.dart';
-import 'package:stckshaper/models/productfactmodul.dart';
-import 'package:stckshaper/models/productmodul.dart';
-import 'package:stckshaper/models/usermodul.dart';
+
+import '../models/classes/bonlivraisonmodul.dart';
+import '../models/classes/clientmodul.dart';
+import '../models/classes/depositmodul.dart';
+import '../models/classes/facturesmodul.dart';
+import '../models/classes/groupsmodul.dart';
+import '../models/classes/productfactmodul.dart';
+import '../models/classes/productmodul.dart';
+import '../models/classes/usermodul.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();

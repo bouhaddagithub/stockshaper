@@ -1,0 +1,14 @@
+{
+    "cSpell.words": [
+        "sqflite"
+    ],
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "GL Project",
+            "group": "Flutter App",
+            "database": "${workspaceFolder:stockshaper}/stckshaper/main.db"
+        }
+    ]
+}
