@@ -1,9 +1,9 @@
 class Deposit {
-  int id;
+  int? id;
   String name;
 
   Deposit({
-    required this.id,
+    this.id,
     required this.name,
   });
   static Deposit empty() {
@@ -15,6 +15,11 @@ class Deposit {
 
   // Convert a Client object into a Map
   Map<String, dynamic> toMap() {
+    if (id == null) {
+      return {
+        'name': name,
+      };
+    }
     return {
       'id': id,
       'name': name,

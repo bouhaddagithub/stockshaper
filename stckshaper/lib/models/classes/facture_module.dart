@@ -1,5 +1,5 @@
 class Facture {
-  int id;
+  int? id;
   DateTime date;
   DateTime? updateDate;
   DateTime? updateTime;
@@ -11,7 +11,7 @@ class Facture {
   String type;
 
   Facture({
-    required this.id,
+    this.id,
     required this.date,
     this.updateDate,
     this.updateTime,
@@ -25,6 +25,19 @@ class Facture {
 
   // Convert a Facture object into a Map
   Map<String, dynamic> toMap() {
+    if (id == null) {
+      return {
+        'date': date.toIso8601String(),
+        'update_date': updateDate?.toIso8601String(),
+        'update_time': updateTime?.toIso8601String(),
+        'solde': solde,
+        'reste': reste,
+        'payment': payment,
+        'id_client': clientId,
+        'id_seller': sellerId,
+        'type': type,
+      };
+    }
     return {
       'id': id,
       'date': date.toIso8601String(),

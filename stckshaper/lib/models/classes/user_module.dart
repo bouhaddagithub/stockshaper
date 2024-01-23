@@ -1,11 +1,11 @@
 class User {
-  int id;
+  int? id;
   String username;
   String password;
   int isActive;
 
   User({
-    required this.id,
+    this.id,
     required this.username,
     required this.password,
     required this.isActive,
@@ -13,6 +13,13 @@ class User {
 
   // Convert a User object into a Map
   Map<String, dynamic> toMap() {
+    if (id == null) {
+      return {
+        'username': username,
+        'password': password,
+        'l': isActive,
+      };
+    }
     return {
       'id': id,
       'username': username,

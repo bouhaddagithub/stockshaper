@@ -1,5 +1,5 @@
 class Client {
-  int id;
+  int? id;
   String name;
   String address;
   String phoneNumber;
@@ -9,7 +9,7 @@ class Client {
   double creditAmount;
 
   Client({
-    required this.id,
+    this.id,
     required this.name,
     required this.address,
     required this.phoneNumber,
@@ -33,6 +33,17 @@ class Client {
 
   // Convert a Client object into a Map
   Map<String, dynamic> toMap() {
+    if (id == null) {
+      return {
+        'name': name,
+        'address': address,
+        'phone_num': phoneNumber,
+        'sold_total': soldTotal,
+        'reste': remainingAmount,
+        'paid': paidAmount,
+        'credit': creditAmount,
+      };
+    }
     return {
       'id': id,
       'name': name,

@@ -4,14 +4,14 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-import '../models/classes/bonlivraisonmodul.dart';
-import '../models/classes/clientmodul.dart';
-import '../models/classes/depositmodul.dart';
-import '../models/classes/facturesmodul.dart';
-import '../models/classes/groupsmodul.dart';
-import '../models/classes/productfactmodul.dart';
-import '../models/classes/productmodul.dart';
-import '../models/classes/usermodul.dart';
+import '../models/classes/bon_livraison_module.dart';
+import '../models/classes/client_module.dart';
+import '../models/classes/deposit_module.dart';
+import '../models/classes/facture_module.dart';
+import '../models/classes/category_module.dart';
+import '../models/classes/product_fact_module.dart';
+import '../models/classes/product_module.dart';
+import '../models/classes/user_module.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -41,7 +41,7 @@ class DatabaseHelper {
       onCreate: (Database db, int version) async {
         await db.execute('''
            CREATE TABLE IF NOT EXISTS clients (
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY autoincrement,
             name TEXT NOT NULL,
             address TEXT,
             phone_num TEXT,
@@ -51,72 +51,66 @@ class DatabaseHelper {
             credit REAL
           );''');
         await db.execute('''
-            CREATE TABLE IF NOT EXISTS "deposits" (
-                    	"id"	INTEGER,
-                    	"name"	TEXT NOT NULL UNIQUE,
-                    	PRIMARY KEY("id")
+            CREATE TABLE IF NOT EXISTS deposits (
+                    	id	INTEGER PRIMARY KEY autoincrement,
+                    	name	TEXT NOT NULL UNIQUE
           );''');
         await db.execute('''
-           CREATE TABLE IF NOT EXISTS "factures" (
-                    	"id"	INTEGER,
-                    	"date"	DATE NOT NULL,
-                    	"update_date"	DATE,
-                    	"update_time"	TIMESTAMP,
-                    	"solde"	REAL,
-                    	"reste"	REAL,
-                    	"payment"	REAL,
-                    	"id_client"	INTEGER,
-                    	"id_seller"	INTEGER,
-                    	"type"	TEXT,
-                    	PRIMARY KEY("id")
+           CREATE TABLE IF NOT EXISTS factures (
+                    	id	INTEGER PRIMARY KEY autoincrement,
+                    	date	DATE NOT NULL,
+                    	update_date	DATE,
+                    	update_time	TIMESTAMP,
+                    	solde	REAL,
+                    	reste	REAL,
+                    	payment	REAL,
+                    	id_client	INTEGER,
+                    	id_seller	INTEGER,
+                    	type	TEXT
           );''');
         await db.execute('''
-           CREATE TABLE IF NOT EXISTS "groupes" (
-                    	"id"	INTEGER,
-                    	"name"	TEXT NOT NULL,
-                    	PRIMARY KEY("id")
+           CREATE TABLE IF NOT EXISTS groupes (
+                    	id	INTEGER PRIMARY KEY autoincrement,
+                    	name	TEXT NOT NULL
           );''');
         await db.execute('''
-               CREATE TABLE IF NOT EXISTS "products" (
-                    	"id"	INTEGER UNIQUE,
-                    	"bar_code"	VARCHAR NOT NULL UNIQUE,
-                    	"reference"	VARCHAR UNIQUE,
-                    	"name"	VARCHAR NOT NULL,
-                    	"buying_price"	REAL,
-                    	"selling_price"	REAL,
-                    	"stock"	INTEGER,
-                    	"photo"	VARCHAR,
-                    	"id_groupe"	INTEGER,
-                    	"id_deposite"	INTEGER,
-                    	PRIMARY KEY("id")
+               CREATE TABLE IF NOT EXISTS products (
+                    	id	INTEGER PRIMARY KEY autoincrement,
+                    	bar_code	VARCHAR NOT NULL UNIQUE,
+                    	reference	VARCHAR UNIQUE,
+                    	name	VARCHAR NOT NULL,
+                    	buying_price	REAL,
+                    	selling_price	REAL,
+                    	stock	INTEGER,
+                    	photo	VARCHAR,
+                    	id_groupe	INTEGER,
+                    	id_deposite	INTEGER
           );''');
         await db.execute('''
-             CREATE TABLE IF NOT EXISTS "product_facts" (
-                    	"id_fact"	INTEGER,
-                    	"id_prod"	INTEGER,
-                    	"product_price"	REAL,
-                    	"product_qte"	INTEGER,
-                    	"tva"	REAL,
+             CREATE TABLE IF NOT EXISTS product_facts (
+                    	id_fact	INTEGER,
+                    	id_prod	INTEGER,
+                    	product_price	REAL,
+                    	product_qte	INTEGER,
+                    	tva	REAL,
                     	PRIMARY KEY("id_fact","id_prod")
           );''');
         await db.execute('''
-             CREATE TABLE IF NOT EXISTS "bon_de_livraisons" (
-                    	"id"	INTEGER,
-                    	"date"	DATE NOT NULL,
-                    	"old_reste"	REAL,
-                    	"reste"	REAL,
-                    	"payment"	REAL,
-                    	"id_client"	INTEGER,
-                    	"id_user"	INTEGER,
-                    	PRIMARY KEY("id")
+             CREATE TABLE IF NOT EXISTS bon_de_livraisons (
+                    	id	INTEGER PRIMARY KEY autoincrement,
+                    	date	DATE NOT NULL,
+                    	old_reste	REAL,
+                    	reste	REAL,
+                    	payment	REAL,
+                    	id_client	INTEGER,
+                    	id_user	INTEGER
           );''');
         await db.execute('''
-            CREATE TABLE IF NOT EXISTS "users" (
-                    	"id"	INTEGER,
-                    	"username"	TEXT NOT NULL,
-                    	"password"	TEXT NOT NULL,
-                    	"l"	INTEGER NOT NULL,
-                    	PRIMARY KEY("id")
+            CREATE TABLE IF NOT EXISTS users (
+                    	id	INTEGER PRIMARY KEY autoincrement,
+                    	username	TEXT NOT NULL,
+                    	password	TEXT NOT NULL,
+                    	l	INTEGER NOT NULL
           );''');
       },
     );
@@ -177,18 +171,18 @@ class DatabaseHelper {
 
   // GROUPS
 
-  Future<void> insertGroupe(Groupe groupe) async {
+  Future<void> insertGroupe(Category category) async {
     final Database db = await database;
-    await db.insert('groupes', groupe.toMap(),
+    await db.insert('groupes', category.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<List<Groupe>> getGroupes() async {
+  Future<List<Category>> getGroupes() async {
     final Database db = await database;
     final List<Map<String, dynamic>> maps = await db.query('groupes');
 
     return List.generate(maps.length, (i) {
-      return Groupe.fromMap(maps[i]);
+      return Category.fromMap(maps[i]);
     });
   }
 
@@ -196,8 +190,11 @@ class DatabaseHelper {
 
   Future<void> insertProduct(Product product) async {
     final Database db = await database;
-    await db.insert('products', product.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace);
+    await db.insert(
+      'products',
+      product.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 
   Future<List<Product>> getProducts() async {

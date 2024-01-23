@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:stckshaper/models/classes/clientmodul.dart";
+import 'package:stckshaper/models/classes/client_module.dart';
 import "package:stckshaper/style.dart";
 import "package:stckshaper/widgets/info_dialog.dart";
 
@@ -112,7 +112,7 @@ class ClientRow extends StatelessWidget {
                     vertical: 2,
                   ),
                   child: Text(
-                    client.soldTotal.toString(),
+                    "Total Sold: ${client.soldTotal.toString()}",
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,

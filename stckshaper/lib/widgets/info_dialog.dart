@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stckshaper/models/classes/clientmodul.dart';
+import 'package:stckshaper/models/classes/client_module.dart';
 
-import '../models/classes/productmodul.dart';
+import '../models/classes/product_module.dart';
 
 class ClientInfoDialog extends StatelessWidget {
   final Client client;

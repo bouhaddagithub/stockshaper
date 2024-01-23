@@ -14,7 +14,7 @@ class DefaultTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (initialText == null) {
+    if (initialText != null) {
       controller.text = initialText!;
     }
     return TextFormField(

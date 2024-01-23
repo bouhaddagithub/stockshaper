@@ -1,5 +1,5 @@
 class BonLivraison {
-  int id;
+  int? id;
   DateTime date;
   double oldReste;
   double reste;
@@ -8,7 +8,7 @@ class BonLivraison {
   int userId; // Assuming a foreign key to the "users" table
 
   BonLivraison({
-    required this.id,
+    this.id,
     required this.date,
     required this.oldReste,
     required this.reste,
@@ -19,6 +19,16 @@ class BonLivraison {
 
   // Convert a BonLivraison object into a Map
   Map<String, dynamic> toMap() {
+    if (id == null) {
+      return {
+        'date': date.toIso8601String(),
+        'old_reste': oldReste,
+        'reste': reste,
+        'payment': payment,
+        'id_client': clientId,
+        'id_user': userId,
+      };
+    }
     return {
       'id': id,
       'date': date.toIso8601String(),

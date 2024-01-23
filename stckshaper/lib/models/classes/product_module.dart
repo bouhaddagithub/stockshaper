@@ -1,5 +1,5 @@
 class Product {
-  int id;
+  int? id;
   String barCode;
   String reference;
   String name;
@@ -11,7 +11,7 @@ class Product {
   int depositeId; //  foreign key to the "deposits" table
 
   Product({
-    required this.id,
+    this.id,
     required this.barCode,
     required this.reference,
     required this.name,
@@ -39,6 +39,19 @@ class Product {
 
   // Convert a Product object into a Map
   Map<String, dynamic> toMap() {
+    if (id == null) {
+      return {
+        'bar_code': barCode,
+        'reference': reference,
+        'name': name,
+        'buying_price': buyingPrice,
+        'selling_price': sellingPrice,
+        'stock': stock,
+        'photo': photo,
+        'id_groupe': groupId,
+        'id_deposite': depositeId,
+      };
+    }
     return {
       'id': id,
       'bar_code': barCode,

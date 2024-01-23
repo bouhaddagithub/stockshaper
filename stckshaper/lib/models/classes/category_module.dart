@@ -1,13 +1,13 @@
-class Groupe {
-  int id;
+class Category {
+  int? id;
   String name;
 
-  Groupe({
-    required this.id,
+  Category({
+    this.id,
     required this.name,
   });
-  static Groupe empty() {
-    return Groupe(
+  static Category empty() {
+    return Category(
       id: 0,
       name: '',
     );
@@ -15,6 +15,11 @@ class Groupe {
 
   // Convert a Groupe object into a Map
   Map<String, dynamic> toMap() {
+    if (id == null) {
+      return {
+        'name': name,
+      };
+    }
     return {
       'id': id,
       'name': name,
@@ -22,8 +27,8 @@ class Groupe {
   }
 
   // Create a Groupe object from a Map
-  factory Groupe.fromMap(Map<String, dynamic> map) {
-    return Groupe(
+  factory Category.fromMap(Map<String, dynamic> map) {
+    return Category(
       id: map['id'],
       name: map['name'],
     );

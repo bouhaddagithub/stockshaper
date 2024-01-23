@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:stckshaper/style.dart";
 
-import "../models/classes/productmodul.dart";
+import '../models/classes/product_module.dart';
 import "info_dialog.dart";
 
 class ProductRow extends StatelessWidget {
@@ -114,7 +114,7 @@ class ProductRow extends StatelessWidget {
                     vertical: 2,
                   ),
                   child: Text(
-                    product.stock.toDouble().toString(),
+                    "In Stock: ${product.stock.toDouble().toString()}",
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,

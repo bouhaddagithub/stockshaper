@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:stckshaper/models/classes/clientmodul.dart';
-import 'package:stckshaper/models/classes/productmodul.dart';
+import 'package:stckshaper/models/classes/client_module.dart';
+import 'package:stckshaper/models/classes/product_module.dart';
 import 'package:stckshaper/pages/default_tabs.dart';
+import 'package:stckshaper/pages/sub/categories.dart';
+import 'package:stckshaper/pages/sub/clients.dart';
+import 'package:stckshaper/pages/sub/deposits.dart';
+import 'package:stckshaper/pages/sub/products.dart';
 import 'package:stckshaper/sqlite/database_connection.dart';
-import 'package:stckshaper/widgets/category_row.dart';
 
+import '../models/classes/deposit_module.dart';
+import '../models/classes/category_module.dart';
 import '../style.dart';
-import '../widgets/client_row.dart';
-import '../widgets/deposit_row.dart';
-import '../widgets/product_row.dart';
 
 class Navigation extends StatefulWidget {
   const Navigation({super.key});
@@ -22,12 +24,16 @@ class _NavigationState extends State<Navigation> {
 
   late List<Client> clients = [];
   late List<Product> products = [];
+  late List<Deposit> deposits = [];
+  late List<Category> categories = [];
 
   @override
   void initState() {
     super.initState();
     _fetchClients();
-    _fetshProducts();
+    _fetchProducts();
+    _fetchDeposits();
+    _fetchCategories();
   }
 
   void _fetchClients() async {
@@ -37,10 +43,24 @@ class _NavigationState extends State<Navigation> {
     });
   }
 
-  void _fetshProducts() async {
-    List<Product> fetshedProducts = await DatabaseHelper().getProducts();
+  void _fetchProducts() async {
+    List<Product> fetchedProducts = await DatabaseHelper().getProducts();
     setState(() {
-      products = fetshedProducts;
+      products = fetchedProducts;
+    });
+  }
+
+  void _fetchDeposits() async {
+    List<Deposit> fetchedDeposits = await DatabaseHelper().getDeposits();
+    setState(() {
+      deposits = fetchedDeposits;
+    });
+  }
+
+  void _fetchCategories() async {
+    List<Category> fetchedCategories = await DatabaseHelper().getGroupes();
+    setState(() {
+      categories = fetchedCategories;
     });
   }
 
@@ -49,7 +69,15 @@ class _NavigationState extends State<Navigation> {
   }
 
   void refreshProduct() {
-    _fetshProducts();
+    _fetchProducts();
+  }
+
+  void refreshDeposits() {
+    _fetchDeposits();
+  }
+
+  void refreshCategories() {
+    _fetchCategories();
   }
 
   @override
@@ -58,31 +86,19 @@ class _NavigationState extends State<Navigation> {
       body: Stack(
         children: [
           DefaultController(
-            tabsNum: 3,
-            tabsLabels: const ["Products", "Clients", "Categories"],
+            tabsNum: 4,
+            tabsLabels: const ["Products", "Clients", "Categories", "Deposits"],
+            refreshes: [
+              refreshProduct,
+              refreshClients,
+              refreshCategories,
+              refreshDeposits
+            ],
             tabs: [
-              Column(
-                children: [
-                  if (clients.isNotEmpty)
-                    for (Client client in clients) ClientRow(client: client),
-                  if (clients.isEmpty) ClientRow(client: Client.empty()),
-                  if (products.isNotEmpty)
-                    for (Product product in products)
-                      ProductRow(product: product),
-                  if (products.isEmpty) ProductRow(product: Product.empty()),
-                  const CategoryRow(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const DepositRow(),
-                ],
-              ),
-              Container(
-                color: Colors.blueGrey,
-              ),
-              Container(
-                color: Colors.redAccent,
-              ),
+              ProductsWidget(products: products),
+              ClientsWidget(clients: clients),
+              CategoriesWidget(categories: categories),
+              DepositsWidget(deposits: deposits),
             ],
           ),
           Positioned(

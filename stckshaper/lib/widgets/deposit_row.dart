@@ -1,8 +1,11 @@
 import "package:flutter/material.dart";
 import "package:stckshaper/style.dart";
 
+import '../models/classes/deposit_module.dart';
+
 class DepositRow extends StatefulWidget {
-  const DepositRow({super.key});
+  const DepositRow({super.key, required this.deposit});
+  final Deposit deposit;
 
   @override
   State<DepositRow> createState() => _DepositRowState();
@@ -14,14 +17,10 @@ class _DepositRowState extends State<DepositRow> {
     return Container(
       height: 50,
       width: MediaQuery.sizeOf(context).width,
-      margin: const EdgeInsets.symmetric(horizontal: 10),
+      margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: kMainColorDarker,
-        // border: Border.all(
-        //   color: kMainColor,
-        //   width: 2,
-        // ),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
@@ -38,19 +37,19 @@ class _DepositRowState extends State<DepositRow> {
                 ),
               ),
             ),
-            child: const Text(
-              "01",
-              style: TextStyle(
+            child: Text(
+              "${widget.deposit.id}",
+              style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
           ),
-          const Expanded(
+          Expanded(
             child: Text(
-              "Deposit Name",
-              style: TextStyle(
+              widget.deposit.name,
+              style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,

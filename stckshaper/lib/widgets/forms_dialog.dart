@@ -1,10 +1,10 @@
 import "package:flutter/material.dart";
-import 'package:stckshaper/models/classes/clientmodul.dart';
-import 'package:stckshaper/models/classes/depositmodul.dart';
-import 'package:stckshaper/models/classes/groupsmodul.dart';
-import 'package:stckshaper/pages/navigation.dart';
+import 'package:stckshaper/models/classes/client_module.dart';
+import 'package:stckshaper/models/classes/deposit_module.dart';
+import 'package:stckshaper/models/classes/category_module.dart';
 import 'package:stckshaper/sqlite/database_connection.dart';
 import 'package:stckshaper/style.dart';
+import '../models/classes/product_module.dart';
 import 'default_textfield.dart';
 
 class ClientFormDialog extends StatefulWidget {
@@ -22,14 +22,13 @@ class _ClientFormDialogState extends State<ClientFormDialog> {
 
   void _addClientToDatabase() {
     Client newClient = Client(
-        id: 0,
         name: clientName.text,
         phoneNumber: clientPhone.text,
         address: clientAddress.text,
         creditAmount: double.parse(clientCreditLimit.text),
         remainingAmount: 0,
         paidAmount: 0,
-        soldTotal: 0);
+        soldTotal: 0,);
 
     DatabaseHelper().insertClient(newClient);
 
@@ -120,9 +119,8 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
       productSellingPrice = TextEditingController(),
       productAmount = TextEditingController();
 
-  void _addProducttoDatabase() {
+  void _addProductToDatabase() {
     Product newProduct = Product(
-        id: 0,
         name: productName.text,
         reference: productReference.text,
         barCode: productBarCode.text,
@@ -204,7 +202,7 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
       actions: [
         ElevatedButton(
           onPressed: () {
-            _addProducttoDatabase();
+            _addProductToDatabase();
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: kMainColor,
@@ -239,9 +237,9 @@ class CategoryFormDialog extends StatefulWidget {
 class _CategoryFormDialogState extends State<CategoryFormDialog> {
   TextEditingController categoryName = TextEditingController();
 
-  void _addCategorietoDatabase() {
-    Groupe newcategorie = Groupe(id: 0, name: categoryName.text);
-    DatabaseHelper().insertGroupe(newcategorie);
+  void _addCategoryToDatabase() {
+    Category newCategory = Category(name: categoryName.text);
+    DatabaseHelper().insertGroupe(newCategory);
     // Close the dialog
     Navigator.of(context).pop();
   }
@@ -278,7 +276,7 @@ class _CategoryFormDialogState extends State<CategoryFormDialog> {
       actions: [
         ElevatedButton(
           onPressed: () {
-            _addCategorietoDatabase();
+            _addCategoryToDatabase();
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: kMainColor,
@@ -311,9 +309,9 @@ class DepositFormDialog extends StatefulWidget {
 class _DepositFormDialogState extends State<DepositFormDialog> {
   TextEditingController depositName = TextEditingController();
 
-  void _addDepotoDatabase() {
-    Deposit newdepo = Deposit(id: 0, name: depositName.text);
-    DatabaseHelper().insertDeposit(newdepo);
+  void _addDepositToDatabase() {
+    Deposit newDeposit = Deposit(name: depositName.text);
+    DatabaseHelper().insertDeposit(newDeposit);
     // Close the dialog
     Navigator.of(context).pop();
   }
@@ -332,7 +330,7 @@ class _DepositFormDialogState extends State<DepositFormDialog> {
           const SizedBox(
             width: 15,
           ),
-          const Text('Add Category'),
+          const Text('Add Deposit'),
         ],
       ),
       content: Form(
@@ -350,7 +348,7 @@ class _DepositFormDialogState extends State<DepositFormDialog> {
       actions: [
         ElevatedButton(
           onPressed: () {
-            _addDepotoDatabase();
+            _addDepositToDatabase();
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: kMainColor,

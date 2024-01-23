@@ -1,8 +1,11 @@
 import "package:flutter/material.dart";
 import "package:stckshaper/style.dart";
 
+import '../models/classes/category_module.dart';
+
 class CategoryRow extends StatefulWidget {
-  const CategoryRow({super.key});
+  final Category category;
+  const CategoryRow({super.key, required this.category});
 
   @override
   State<CategoryRow> createState() => _CategoryRowState();
@@ -14,7 +17,7 @@ class _CategoryRowState extends State<CategoryRow> {
     return Container(
       height: 50,
       width: MediaQuery.sizeOf(context).width,
-      margin: const EdgeInsets.symmetric(horizontal: 10),
+      margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: kSecondaryColor,
@@ -38,19 +41,19 @@ class _CategoryRowState extends State<CategoryRow> {
                 ),
               ),
             ),
-            child: const Text(
-              "01",
-              style: TextStyle(
+            child: Text(
+              "${widget.category.id}",
+              style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
           ),
-          const Expanded(
+          Expanded(
             child: Text(
-              "Category Name",
-              style: TextStyle(
+              widget.category.name,
+              style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
