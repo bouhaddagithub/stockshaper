@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:stckshaper/style.dart';
-import '../models/classes/productmodul.dart';
-import 'default_texfield.dart';
+import 'default_textfield.dart';
 
 class ClientFormDialog extends StatefulWidget {
   const ClientFormDialog({super.key});
@@ -188,7 +187,9 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
 }
 
 class CategoryFormDialog extends StatefulWidget {
-  const CategoryFormDialog({super.key});
+  const CategoryFormDialog({super.key, this.forEdit = false});
+
+  final bool forEdit;
 
   @override
   State<CategoryFormDialog> createState() => _CategoryFormDialogState();
@@ -251,6 +252,7 @@ class _CategoryFormDialogState extends State<CategoryFormDialog> {
     );
   }
 }
+
 class DepositFormDialog extends StatefulWidget {
   const DepositFormDialog({super.key});
 

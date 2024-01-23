@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 
-
 class DefaultTextField extends StatelessWidget {
   const DefaultTextField({
     super.key,
-    required this.controller, required this.label,
+    required this.controller,
+    required this.label,
+    this.initialText,
   });
 
   final TextEditingController controller;
   final String label;
+  final String? initialText;
 
   @override
   Widget build(BuildContext context) {
+    if (initialText == null) {
+      controller.text = initialText!;
+    }
     return TextFormField(
       controller: controller,
       decoration: InputDecoration(
@@ -65,5 +70,3 @@ class ProductFormDialog extends StatelessWidget {
     );
   }
 }
-
-

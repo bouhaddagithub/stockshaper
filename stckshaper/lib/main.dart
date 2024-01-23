@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:stckshaper/pages/default_tabs.dart';
 import 'package:stckshaper/pages/navigation.dart';
 import 'package:stckshaper/style.dart';
-import 'package:stckshaper/temporary_homepage.dart';
 
 void main() {
   runApp(const MyApp());

@@ -3,9 +3,11 @@ import 'package:stckshaper/models/classes/clientmodul.dart';
 import 'package:stckshaper/models/classes/productmodul.dart';
 import 'package:stckshaper/pages/default_tabs.dart';
 import 'package:stckshaper/sqlite/database_connection.dart';
+import 'package:stckshaper/widgets/category_row.dart';
 
 import '../style.dart';
 import '../widgets/client_row.dart';
+import '../widgets/deposit_row.dart';
 import '../widgets/product_row.dart';
 
 class Navigation extends StatefulWidget {
@@ -48,8 +50,24 @@ class _NavigationState extends State<Navigation> {
                     for (Client client in clients) ClientRow(client: client),
                   if (clients.isEmpty) ClientRow(client: Client.empty()),
                   ProductRow(
-                    product: Product(id: 0, barCode: "barCode", reference: "reference", name: "name", buyingPrice: 5, sellingPrice: 10, stock: 2, photo: "photo", groupId: 0, depositeId: 0),
+                    product: Product(
+                      id: 0,
+                      barCode: "barCode",
+                      reference: "reference",
+                      name: "name",
+                      buyingPrice: 5,
+                      sellingPrice: 10,
+                      stock: 2,
+                      photo: "photo",
+                      groupId: 0,
+                      depositeId: 0,
+                    ),
                   ),
+                  const CategoryRow(),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const DepositRow(),
                 ],
               ),
               Container(
