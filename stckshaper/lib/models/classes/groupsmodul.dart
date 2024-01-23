@@ -6,6 +6,12 @@ class Groupe {
     required this.id,
     required this.name,
   });
+  static Groupe empty() {
+    return Groupe(
+      id: 0,
+      name: '',
+    );
+  }
 
   // Convert a Groupe object into a Map
   Map<String, dynamic> toMap() {

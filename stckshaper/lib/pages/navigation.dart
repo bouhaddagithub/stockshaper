@@ -19,11 +19,13 @@ class _NavigationState extends State<Navigation> {
   int selected = 0;
 
   late List<Client> clients = [];
+  late List<Product> products = [];
 
   @override
   void initState() {
     super.initState();
     _fetchClients();
+    _fetshProducts();
   }
 
   void _fetchClients() async {
@@ -31,6 +33,21 @@ class _NavigationState extends State<Navigation> {
     setState(() {
       clients = fetchedClients;
     });
+  }
+
+  void _fetshProducts() async {
+    List<Product> fetshedProducts = await DatabaseHelper().getProducts();
+    setState(() {
+      products = fetshedProducts;
+    });
+  }
+
+  void refreshClients() {
+    _fetchClients();
+  }
+
+  void refreshProduct() {
+    _fetshProducts();
   }
 
   @override
@@ -47,9 +64,10 @@ class _NavigationState extends State<Navigation> {
                   if (clients.isNotEmpty)
                     for (Client client in clients) ClientRow(client: client),
                   if (clients.isEmpty) ClientRow(client: Client.empty()),
-                  ProductRow(
-                    product: Product(id: 0, barCode: "barCode", reference: "reference", name: "name", buyingPrice: 5, sellingPrice: 10, stock: 2, photo: "photo", groupId: 0, depositeId: 0),
-                  ),
+                  if (products.isNotEmpty)
+                    for (Product product in products)
+                      ProductRow(product: product),
+                  if (products.isEmpty) ProductRow(product: Product.empty()),
                 ],
               ),
               Container(
