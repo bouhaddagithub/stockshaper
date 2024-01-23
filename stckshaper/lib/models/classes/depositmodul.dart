@@ -6,6 +6,12 @@ class Deposit {
     required this.id,
     required this.name,
   });
+  static Deposit empty() {
+    return Deposit(
+      id: 0,
+      name: '',
+    );
+  }
 
   // Convert a Client object into a Map
   Map<String, dynamic> toMap() {

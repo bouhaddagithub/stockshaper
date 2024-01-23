@@ -43,7 +43,7 @@ class DatabaseHelper {
            CREATE TABLE IF NOT EXISTS clients (
             id INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
-            adresse TEXT,
+            address TEXT,
             phone_num TEXT,
             sold_total REAL,
             reste REAL,

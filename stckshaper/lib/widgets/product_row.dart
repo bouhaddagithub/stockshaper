@@ -6,7 +6,7 @@ import "info_dialog.dart";
 
 class ProductRow extends StatelessWidget {
   const ProductRow({super.key, required this.product});
-  
+
   final Product product;
 
   @override
@@ -51,7 +51,7 @@ class ProductRow extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    "0",
+                    product.id.toString(),
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -66,7 +66,7 @@ class ProductRow extends StatelessWidget {
                       height: 4,
                     ),
                     Text(
-                      "Product Name",
+                      product.name,
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
@@ -74,7 +74,7 @@ class ProductRow extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Reference",
+                      product.reference.toString(),
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -82,7 +82,7 @@ class ProductRow extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "BarCode",
+                      product.barCode,
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -113,9 +113,9 @@ class ProductRow extends StatelessWidget {
                     horizontal: 10,
                     vertical: 2,
                   ),
-                  child: const Text(
-                    "Total: 500.0",
-                    style: TextStyle(
+                  child: Text(
+                    product.stock.toDouble().toString(),
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -155,7 +155,7 @@ class ProductRow extends StatelessWidget {
       ),
     );
   }
-  
+
   void _showFullInfo(BuildContext context) {
     showDialog(
       context: context,

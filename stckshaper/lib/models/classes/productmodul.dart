@@ -22,6 +22,20 @@ class Product {
     required this.groupId,
     required this.depositeId,
   });
+  static Product empty() {
+    return Product(
+      id: 0,
+      name: '',
+      reference: '',
+      barCode: '',
+      buyingPrice: 0,
+      sellingPrice: 0,
+      stock: 0,
+      photo: '',
+      groupId: 0,
+      depositeId: 0,
+    );
+  }
 
   // Convert a Product object into a Map
   Map<String, dynamic> toMap() {

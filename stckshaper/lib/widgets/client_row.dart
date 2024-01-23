@@ -49,7 +49,7 @@ class ClientRow extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    "0",
+                    client.id.toString(),
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -64,7 +64,7 @@ class ClientRow extends StatelessWidget {
                       height: 4,
                     ),
                     Text(
-                      "Haoud Azzedine",
+                      client.name,
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
@@ -72,7 +72,7 @@ class ClientRow extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "0657162466",
+                      client.phoneNumber,
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -80,7 +80,7 @@ class ClientRow extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Mascara",
+                      client.address,
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -111,9 +111,9 @@ class ClientRow extends StatelessWidget {
                     horizontal: 10,
                     vertical: 2,
                   ),
-                  child: const Text(
-                    "Total: 500.0",
-                    style: TextStyle(
+                  child: Text(
+                    client.soldTotal.toString(),
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
