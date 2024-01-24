@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:stckshaper/models/provider_classes.dart';
 import 'package:stckshaper/pages/navigation.dart';
 import 'package:stckshaper/style.dart';
 
@@ -19,7 +21,10 @@ class MyApp extends StatelessWidget {
         // fontFamily: "Roboto",
         useMaterial3: true,
       ),
-      home: const Navigation(),
+      home: ChangeNotifierProvider<NavIndex>(
+        create: (context) => NavIndex(),
+        child: const Navigation(),
+      ),
     );
   }
 }

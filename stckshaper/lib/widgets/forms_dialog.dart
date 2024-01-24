@@ -2,8 +2,10 @@ import "package:flutter/material.dart";
 import 'package:stckshaper/models/classes/client_module.dart';
 import 'package:stckshaper/models/classes/deposit_module.dart';
 import 'package:stckshaper/models/classes/category_module.dart';
+import 'package:stckshaper/models/classes/user_module.dart';
 import 'package:stckshaper/sqlite/database_connection.dart';
 import 'package:stckshaper/style.dart';
+import 'package:stckshaper/widgets/dropdown.dart';
 import '../models/classes/product_module.dart';
 import 'default_textfield.dart';
 
@@ -22,13 +24,14 @@ class _ClientFormDialogState extends State<ClientFormDialog> {
 
   void _addClientToDatabase() {
     Client newClient = Client(
-        name: clientName.text,
-        phoneNumber: clientPhone.text,
-        address: clientAddress.text,
-        creditAmount: double.parse(clientCreditLimit.text),
-        remainingAmount: 0,
-        paidAmount: 0,
-        soldTotal: 0,);
+      name: clientName.text,
+      phoneNumber: clientPhone.text,
+      address: clientAddress.text,
+      creditAmount: double.parse(clientCreditLimit.text),
+      remainingAmount: 0,
+      paidAmount: 0,
+      soldTotal: 0,
+    );
 
     DatabaseHelper().insertClient(newClient);
 
@@ -105,7 +108,11 @@ class _ClientFormDialogState extends State<ClientFormDialog> {
 }
 
 class ProductFormDialog extends StatefulWidget {
-  const ProductFormDialog({super.key});
+  const ProductFormDialog(
+      {super.key, required this.categories, required this.deposits});
+
+  final List<Category> categories;
+  final List<Deposit> deposits;
 
   @override
   State<StatefulWidget> createState() => _ProductFormDialogState();
@@ -118,18 +125,20 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
       productBuyingPrice = TextEditingController(),
       productSellingPrice = TextEditingController(),
       productAmount = TextEditingController();
+  int depositId = 0, categoryId = 0;
 
   void _addProductToDatabase() {
     Product newProduct = Product(
-        name: productName.text,
-        reference: productReference.text,
-        barCode: productBarCode.text,
-        stock: int.parse(productAmount.text),
-        buyingPrice: double.parse(productBuyingPrice.text),
-        sellingPrice: double.parse(productSellingPrice.text),
-        photo: "",
-        groupId: 0,
-        depositeId: 0);
+      name: productName.text,
+      reference: productReference.text,
+      barCode: productBarCode.text,
+      stock: int.parse(productAmount.text),
+      buyingPrice: double.parse(productBuyingPrice.text),
+      sellingPrice: double.parse(productSellingPrice.text),
+      photo: "",
+      groupId: categoryId,
+      depositeId: depositId,
+    );
     DatabaseHelper().insertProduct(newProduct);
 
     // Close the dialog
@@ -196,6 +205,25 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
             const SizedBox(
               height: 10,
             ),
+            Row(
+              children: [
+                Expanded(
+                  child: MyDropdown(
+                    getId: getId,
+                    categories: widget.categories,
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: MyDropdown(
+                    getId: getId,
+                    deposits: widget.deposits,
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
@@ -222,6 +250,14 @@ class _ProductFormDialogState extends State<ProductFormDialog> {
         ),
       ],
     );
+  }
+
+  getId(int selectedItemId, bool isForCategory) {
+    if (isForCategory) {
+      categoryId = selectedItemId;
+    } else {
+      depositId = selectedItemId;
+    }
   }
 }
 
@@ -349,6 +385,83 @@ class _DepositFormDialogState extends State<DepositFormDialog> {
         ElevatedButton(
           onPressed: () {
             _addDepositToDatabase();
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: kMainColor,
+            elevation: 0,
+            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 30),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          child: const Text(
+            'Add',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class UserFormDialog extends StatefulWidget {
+  const UserFormDialog({super.key});
+
+  @override
+  State<UserFormDialog> createState() => _UserFormDialogState();
+}
+
+class _UserFormDialogState extends State<UserFormDialog> {
+  TextEditingController username = TextEditingController();
+  TextEditingController password = TextEditingController();
+
+  void _addUserToDatabase() {
+    User newUser = User(username: username.text, password: password.text, isActive: 0);
+    DatabaseHelper().insertUser(newUser);
+    // Close the dialog
+    Navigator.of(context).pop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      scrollable: true,
+      title: Row(
+        children: [
+          Icon(
+            Icons.person_rounded,
+            size: 32,
+            color: kBlackColor.withOpacity(0.8),
+          ),
+          const SizedBox(
+            width: 15,
+          ),
+          const Text('Add User'),
+        ],
+      ),
+      content: Form(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            DefaultTextField(controller: username, label: "Username"),
+            const SizedBox(
+              height: 10,
+            ),
+            DefaultTextField(controller: password, label: "Password", isObscure: true),
+            const SizedBox(
+              height: 10,
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        ElevatedButton(
+          onPressed: () {
+            _addUserToDatabase();
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: kMainColor,

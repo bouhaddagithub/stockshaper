@@ -1,4 +1,8 @@
 import "package:flutter/material.dart";
+import "package:stckshaper/models/classes/category_module.dart";
+import "package:stckshaper/models/classes/deposit_module.dart";
+import "package:stckshaper/sqlite/database_connection.dart";
+import 'package:stckshaper/widgets/appbar_tile.dart';
 import "package:stckshaper/widgets/forms_dialog.dart";
 
 import "../style.dart";
@@ -23,15 +27,33 @@ class DefaultController extends StatefulWidget {
 
 class _DefaultControllerState extends State<DefaultController>
     with TickerProviderStateMixin {
+  late List<Deposit> deposits = [];
+  late List<Category> categories = [];
   late TabController tabController;
 
   void refresh(int tabIndex) {
     widget.refreshes[tabIndex]();
   }
 
+  void _fetchDeposits() async {
+    List<Deposit> fetchedDeposits = await DatabaseHelper().getDeposits();
+    setState(() {
+      deposits = fetchedDeposits;
+    });
+  }
+
+  void _fetchCategories() async {
+    List<Category> fetchedCategories = await DatabaseHelper().getGroupes();
+    setState(() {
+      categories = fetchedCategories;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    _fetchDeposits();
+    _fetchCategories();
     tabController = TabController(length: 4, vsync: this);
   }
 
@@ -59,7 +81,10 @@ class _DefaultControllerState extends State<DefaultController>
                       if (tabController.index == 0) {
                         await showDialog(
                           context: context,
-                          builder: (context) => const ProductFormDialog(),
+                          builder: (context) => ProductFormDialog(
+                            categories: categories,
+                            deposits: deposits,
+                          ),
                         );
                       } else if (tabController.index == 1) {
                         await showDialog(
@@ -153,83 +178,3 @@ class _DefaultControllerState extends State<DefaultController>
   }
 }
 
-class MyTile extends StatelessWidget {
-  const MyTile({
-    super.key,
-    required this.title,
-    required this.subTitle,
-  });
-
-  final String title, subTitle;
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () {},
-      style: ElevatedButton.styleFrom(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(bottomRight: Radius.circular(15),),
-        ),
-        elevation: 0,
-      ),
-      icon: Container(
-        alignment: Alignment.centerLeft,
-        height: 50,
-        padding: const EdgeInsets.only(left: 10),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CircleAvatar(
-              radius: 20,
-              backgroundColor: kMainColor,
-              child: const FittedBox(
-                child: Text(
-                  "A",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 5,
-            ),
-            FittedBox(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    height: 2,
-                  ),
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 14,
-                      height: 0,
-                      fontWeight: FontWeight.bold,
-                      color: kBlackColor,
-                    ),
-                  ),
-                  Text(
-                    subTitle,
-                    style: TextStyle(
-                      fontSize: 12,
-                      height: 0,
-                      fontWeight: FontWeight.bold,
-                      color: kBlackColor.withOpacity(0.4),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
