@@ -260,4 +260,117 @@ class DatabaseHelper {
       return User.fromMap(maps[i]);
     });
   }
+
+  // delete functions
+
+  // CLIENT
+  Future<void> deleteClient(int id) async {
+    final Database db = await database;
+    await db.delete('clients', where: 'id = ?', whereArgs: [id]);
+  }
+
+// DEPOSIT
+  Future<void> deleteDeposit(int id) async {
+    final Database db = await database;
+    await db.delete('deposits', where: 'id = ?', whereArgs: [id]);
+  }
+
+// FACTURES
+  Future<void> deleteFacture(int id) async {
+    final Database db = await database;
+    await db.delete('factures', where: 'id = ?', whereArgs: [id]);
+  }
+
+// GROUPS
+  Future<void> deleteGroupe(int id) async {
+    final Database db = await database;
+    await db.delete('groupes', where: 'id = ?', whereArgs: [id]);
+  }
+
+// PRODUCT
+  Future<void> deleteProduct(int id) async {
+    final Database db = await database;
+    await db.delete('products', where: 'id = ?', whereArgs: [id]);
+  }
+
+// PRODUCTFACTS
+  Future<void> deleteProductFact(int idFact, int idProd) async {
+    final Database db = await database;
+    await db.delete(
+      'product_facts',
+      where: 'id_fact = ? AND id_prod = ?',
+      whereArgs: [idFact, idProd],
+    );
+  }
+
+// BONLIVRAISON
+  Future<void> deleteBonLivraison(int id) async {
+    final Database db = await database;
+    await db.delete('bon_de_livraisons', where: 'id = ?', whereArgs: [id]);
+  }
+
+// USER
+  Future<void> deleteUser(int id) async {
+    final Database db = await database;
+    await db.delete('users', where: 'id = ?', whereArgs: [id]);
+  }
+
+// update functions
+
+// CLIENT
+  Future<void> updateClient(Client client) async {
+    final Database db = await database;
+    await db.update('clients', client.toMap(),
+        where: 'id = ?', whereArgs: [client.id]);
+  }
+
+// DEPOSIT
+  Future<void> updateDeposit(Deposit deposit) async {
+    final Database db = await database;
+    await db.update('deposits', deposit.toMap(),
+        where: 'id = ?', whereArgs: [deposit.id]);
+  }
+
+// FACTURES
+  Future<void> updateFacture(Facture facture) async {
+    final Database db = await database;
+    await db.update('factures', facture.toMap(),
+        where: 'id = ?', whereArgs: [facture.id]);
+  }
+
+// GROUPS
+  Future<void> updateGroupe(Category category) async {
+    final Database db = await database;
+    await db.update('groupes', category.toMap(),
+        where: 'id = ?', whereArgs: [category.id]);
+  }
+
+// PRODUCT
+  Future<void> updateProduct(Product product) async {
+    final Database db = await database;
+    await db.update('products', product.toMap(),
+        where: 'id = ?', whereArgs: [product.id]);
+  }
+
+// PRODUCTFACTS
+  Future<void> updateProductFact(ProductFact productFact) async {
+    final Database db = await database;
+    await db.update('product_facts', productFact.toMap(),
+        where: 'id_fact = ? AND id_prod = ?',
+        whereArgs: [productFact.idFact, productFact.idProduct]);
+  }
+
+// BONLIVRAISON
+  Future<void> updateBonLivraison(BonLivraison bonLivraison) async {
+    final Database db = await database;
+    await db.update('bon_de_livraisons', bonLivraison.toMap(),
+        where: 'id = ?', whereArgs: [bonLivraison.id]);
+  }
+
+// USER
+  Future<void> updateUser(User user) async {
+    final Database db = await database;
+    await db
+        .update('users', user.toMap(), where: 'id = ?', whereArgs: [user.id]);
+  }
 }

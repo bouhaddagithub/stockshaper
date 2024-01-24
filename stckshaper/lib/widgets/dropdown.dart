@@ -33,15 +33,17 @@ class _MyDropdownState extends State<MyDropdown> {
         (index) =>
             "${widget.categories?[index].id}: ${widget.categories?[index].name}",
       );
-    } else {
+    } else if (widget.deposits != null && widget.deposits!.isNotEmpty) {
       isForCategories = false;
       usedItems = List.generate(
         widget.deposits!.length,
         (index) =>
             "${widget.deposits?[index].id}: ${widget.deposits?[index].name}",
       );
+    } else {
+      usedItems = [];
     }
-    selectedItem = usedItems[0];
+    selectedItem = usedItems.isNotEmpty ? usedItems[0] : "";
   }
 
   @override
@@ -77,7 +79,10 @@ class _MyDropdownState extends State<MyDropdown> {
             .map(
               (e) => DropdownMenuItem<String>(
                 value: e,
-                child: Text(e, overflow: TextOverflow.ellipsis,),
+                child: Text(
+                  e,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             )
             .toList(),
