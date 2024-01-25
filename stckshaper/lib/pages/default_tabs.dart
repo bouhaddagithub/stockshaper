@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 import "package:stckshaper/models/classes/category_module.dart";
+import "package:stckshaper/models/classes/client_module.dart";
 import "package:stckshaper/models/classes/deposit_module.dart";
+import "package:stckshaper/models/classes/product_module.dart";
 import "package:stckshaper/sqlite/database_connection.dart";
 import 'package:stckshaper/widgets/appbar_tile.dart';
 import "package:stckshaper/widgets/forms_dialog.dart";
@@ -29,10 +31,26 @@ class _DefaultControllerState extends State<DefaultController>
     with TickerProviderStateMixin {
   late List<Deposit> deposits = [];
   late List<Category> categories = [];
+  late List<Client> clients = [];
+  late List<Product> products = [];
   late TabController tabController;
 
   void refresh(int tabIndex) {
     widget.refreshes[tabIndex]();
+  }
+
+  void _fetchClients() async {
+    List<Client> fetchedClients = await DatabaseHelper().getClients();
+    setState(() {
+      clients = fetchedClients;
+    });
+  }
+
+  void _fetchProducts() async {
+    List<Product> fetchedProducts = await DatabaseHelper().getProducts();
+    setState(() {
+      products = fetchedProducts;
+    });
   }
 
   void _fetchDeposits() async {
@@ -54,7 +72,9 @@ class _DefaultControllerState extends State<DefaultController>
     super.initState();
     _fetchDeposits();
     _fetchCategories();
-    tabController = TabController(length: 4, vsync: this);
+    _fetchClients();
+    _fetchProducts();
+    tabController = TabController(length: 5, vsync: this);
   }
 
   @override
@@ -96,10 +116,18 @@ class _DefaultControllerState extends State<DefaultController>
                           context: context,
                           builder: (context) => const CategoryFormDialog(),
                         );
-                      } else {
+                      } else if (tabController.index == 3) {
                         await showDialog(
                           context: context,
                           builder: (context) => const DepositFormDialog(),
+                        );
+                      } else {
+                        await showDialog(
+                          context: context,
+                          builder: (context) => FactureFormDialog(
+                            clients: clients,
+                            products: products,
+                          ),
                         );
                       }
                       refresh(tabController.index);
@@ -177,4 +205,3 @@ class _DefaultControllerState extends State<DefaultController>
     );
   }
 }
-

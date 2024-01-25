@@ -2,9 +2,11 @@ import "package:flutter/material.dart";
 import 'package:stckshaper/models/classes/client_module.dart';
 import 'package:stckshaper/models/classes/deposit_module.dart';
 import 'package:stckshaper/models/classes/category_module.dart';
+import 'package:stckshaper/models/classes/facture_module.dart';
 import 'package:stckshaper/models/classes/user_module.dart';
 import 'package:stckshaper/sqlite/database_connection.dart';
 import 'package:stckshaper/style.dart';
+import 'package:stckshaper/widgets/client_product_dropdown.dart';
 import 'package:stckshaper/widgets/dropdown.dart';
 import '../models/classes/product_module.dart';
 import 'default_textfield.dart';
@@ -419,7 +421,8 @@ class _UserFormDialogState extends State<UserFormDialog> {
   TextEditingController password = TextEditingController();
 
   void _addUserToDatabase() {
-    User newUser = User(username: username.text, password: password.text, isActive: 0);
+    User newUser =
+        User(username: username.text, password: password.text, isActive: 0);
     DatabaseHelper().insertUser(newUser);
     // Close the dialog
     Navigator.of(context).pop();
@@ -451,7 +454,8 @@ class _UserFormDialogState extends State<UserFormDialog> {
             const SizedBox(
               height: 10,
             ),
-            DefaultTextField(controller: password, label: "Password", isObscure: true),
+            DefaultTextField(
+                controller: password, label: "Password", isObscure: true),
             const SizedBox(
               height: 10,
             ),
@@ -481,5 +485,136 @@ class _UserFormDialogState extends State<UserFormDialog> {
         ),
       ],
     );
+  }
+}
+
+class FactureFormDialog extends StatefulWidget {
+  const FactureFormDialog(
+      {super.key, required this.clients, required this.products});
+
+  final List<Client> clients;
+  final List<Product> products;
+
+  @override
+  State<StatefulWidget> createState() => _FactureFormDialogState();
+}
+
+class _FactureFormDialogState extends State<FactureFormDialog> {
+  TextEditingController soldeController = TextEditingController(),
+      resteController = TextEditingController(),
+      paymentController = TextEditingController();
+  int clientId = 0, productId = 0;
+
+  void _addFactureToDatabase() {
+    Facture newFacture = Facture(
+      date: DateTime.now(),
+      solde: double.parse(soldeController.text),
+      reste: double.parse(resteController.text),
+      payment: double.parse(paymentController.text),
+      clientId: clientId,
+      sellerId: 0,
+      type: "Sale",
+    );
+
+    DatabaseHelper().insertFacture(newFacture);
+
+    // Close the dialog
+    Navigator.of(context).pop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      scrollable: true,
+      title: Row(
+        children: [
+          Icon(
+            Icons.add_circle_rounded,
+            size: 32,
+            color: kBlackColor.withOpacity(0.8),
+          ),
+          const SizedBox(
+            width: 15,
+          ),
+          const Text('Add Facture'),
+        ],
+      ),
+      content: Form(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: ClientDropdown(
+                    getId: getClientId,
+                    clients: widget.clients,
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: ProductDropdown(
+                    getId: getProductId,
+                    products: widget.products,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            DefaultTextField(controller: soldeController, label: "Solde"),
+            const SizedBox(
+              height: 10,
+            ),
+            DefaultTextField(controller: resteController, label: "Reste"),
+            const SizedBox(
+              height: 10,
+            ),
+            DefaultTextField(controller: paymentController, label: "Payment"),
+            const SizedBox(
+              height: 10,
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        ElevatedButton(
+          onPressed: () {
+            _addFactureToDatabase();
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: kMainColor,
+            elevation: 0,
+            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 30),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          child: const Text(
+            'Add',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  getClientId(int selectedClientId) {
+    setState(() {
+      clientId = selectedClientId;
+    });
+  }
+
+  getProductId(int selectedProductId) {
+    setState(() {
+      productId = selectedProductId;
+    });
   }
 }
